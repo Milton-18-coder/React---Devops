@@ -2,13 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 const LOWERCASE_CHARS = 'abcdefghijklmnopqrstuvwxyz';
-const LOWERCASE_FILTERED = 'abcdefghjkmnpqrstuvwxyz'; // removed: i, l, o
+const LOWERCASE_FILTERED = 'abcdefghjkmnpqrstuvwxyz';
 
 const UPPERCASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const UPPERCASE_FILTERED = 'ABCDEFGHJKMNPQRSTUVWXY'; // removed: I, O, L
+const UPPERCASE_FILTERED = 'ABCDEFGHJKMNPQRSTUVWXY';
 
 const NUMBER_CHARS = '0123456789';
-const NUMBER_FILTERED = '23456789'; // removed: 0, 1
+const NUMBER_FILTERED = '23456789';
 
 const SYMBOL_CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?/';
 
@@ -26,7 +26,6 @@ function App() {
   const [toastMessage, setToastMessage] = useState('');
   const [isRegenerating, setIsRegenerating] = useState(false);
 
-  // Load history from localStorage on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem('passvault_history');
@@ -38,7 +37,6 @@ function App() {
     }
   }, []);
 
-  // Save history to localStorage when changed
   const saveHistory = (newHistory) => {
     setHistory(newHistory);
     try {
@@ -48,7 +46,6 @@ function App() {
     }
   };
 
-  // Helper to trigger custom Toast notifications
   const triggerToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => {
@@ -56,7 +53,6 @@ function App() {
     }, 2500);
   };
 
-  // Main password generation logic
   const generatePassword = useCallback(() => {
     let lowerPool = excludeSimilar ? LOWERCASE_FILTERED : LOWERCASE_CHARS;
     let upperPool = excludeSimilar ? UPPERCASE_FILTERED : UPPERCASE_CHARS;
@@ -69,7 +65,6 @@ function App() {
     if (includeNumbers) activePools.push({ chars: numPool, type: 'number' });
     if (includeSymbols) activePools.push({ chars: symPool, type: 'symbol' });
 
-    // Handle case where no pools are selected
     if (activePools.length === 0) {
       setPassword('');
       return;
@@ -77,7 +72,6 @@ function App() {
 
     let generated = [];
     
-    // Strict mode: Guarantee at least one character from each selected pool
     if (strictMode && length >= activePools.length) {
       activePools.forEach(pool => {
         const randomIndex = Math.floor(Math.random() * pool.chars.length);
@@ -85,7 +79,6 @@ function App() {
       });
     }
 
-    // Create unified character pool for the rest of the password
     const unifiedPool = activePools.map(p => p.chars).join('');
     const remainingLength = length - generated.length;
 
@@ -94,7 +87,6 @@ function App() {
       generated.push(unifiedPool[randomIndex]);
     }
 
-    // Shuffle the generated array to randomize positions (Knuth-Fisher-Yates)
     for (let i = generated.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [generated[i], generated[j]] = [generated[j], generated[i]];
@@ -103,26 +95,21 @@ function App() {
     const finalPass = generated.join('');
     setPassword(finalPass);
 
-    // Add to history (avoid duplicates in recent history)
     const filteredHistory = history.filter(item => item !== finalPass);
     const updatedHistory = [finalPass, ...filteredHistory].slice(0, 5);
     saveHistory(updatedHistory);
   }, [length, includeUpper, includeLower, includeNumbers, includeSymbols, excludeSimilar, strictMode, history]);
 
-  // Generate initial password on load, or when choices change
   useEffect(() => {
     generatePassword();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [length, includeUpper, includeLower, includeNumbers, includeSymbols, excludeSimilar, strictMode]);
 
-  // Trigger spin animation and generate new password
   const handleRegenerate = () => {
     setIsRegenerating(true);
     generatePassword();
     setTimeout(() => setIsRegenerating(false), 500);
   };
 
-  // Copy to clipboard utility
   const copyToClipboard = (text, type = 'Main') => {
     if (!text) return;
     navigator.clipboard.writeText(text)
@@ -139,13 +126,11 @@ function App() {
       });
   };
 
-  // Clear password history
   const clearHistory = () => {
     saveHistory([]);
     triggerToast('Password history cleared.');
   };
 
-  // Password entropy and cracking metrics
   const getEntropyDetails = () => {
     if (!password) return { entropy: 0, label: 'Empty', color: '#ff4d4d', percent: 0, timeToCrack: 'Instant' };
 
@@ -157,10 +142,8 @@ function App() {
 
     if (poolSize === 0) return { entropy: 0, label: 'Empty', color: '#ff4d4d', percent: 0, timeToCrack: 'Instant' };
 
-    // Entropy: E = L * log2(R)
     const entropy = Math.round(password.length * Math.log2(poolSize));
 
-    // Guess speed: assume 100 billion (1e11) guesses/sec offline attack
     const totalGuessesNeeded = Math.pow(2, entropy - 1);
     const timeInSeconds = totalGuessesNeeded / 1e11;
 
@@ -184,24 +167,24 @@ function App() {
     }
 
     let label = 'Weak';
-    let color = '#ff4d6d'; // crimson
+    let color = '#ff4d6d';
     let percent = 20;
 
     if (entropy >= 28 && entropy < 45) {
       label = 'Fair';
-      color = '#ff9f1c'; // orange/amber
+      color = '#ff9f1c';
       percent = 40;
     } else if (entropy >= 45 && entropy < 60) {
       label = 'Good';
-      color = '#ffd166'; // yellow
+      color = '#ffd166';
       percent = 60;
     } else if (entropy >= 60 && entropy < 80) {
       label = 'Strong';
-      color = '#06d6a0'; // green
+      color = '#06d6a0';
       percent = 80;
     } else if (entropy >= 80) {
       label = 'Very Secure';
-      color = '#118ab2'; // deep neon cyan
+      color = '#118ab2';
       percent = 100;
     }
 
@@ -219,7 +202,6 @@ function App() {
       </header>
 
       <main className="app-content">
-        {/* Passwords Display card */}
         <section className="card display-card">
           <div className="password-wrapper">
             <span className={`password-text ${!password ? 'empty' : ''}`} style={{ fontSize: password.length > 24 ? '1.2rem' : '1.8rem' }}>
@@ -261,7 +243,6 @@ function App() {
           </div>
         </section>
 
-        {/* Strength Meter Overview */}
         {password && (
           <section className="strength-summary-card">
             <div className="strength-text-info">
@@ -282,7 +263,6 @@ function App() {
         )}
 
         <div className="settings-grid">
-          {/* Settings Card */}
           <section className="card settings-card">
             <h2>Configure Settings</h2>
             
@@ -381,7 +361,6 @@ function App() {
             </div>
           </section>
 
-          {/* Advanced Analytics & History Card */}
           <div className="right-panel">
             {password && (
               <section className="card analytics-card">
@@ -447,7 +426,6 @@ function App() {
         </div>
       </main>
 
-      {/* Dynamic Floating Toast Notifications */}
       {toastMessage && (
         <div className="floating-toast">
           <span>{toastMessage}</span>

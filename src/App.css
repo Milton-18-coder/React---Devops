@@ -37,7 +37,6 @@ body {
   overflow-x: hidden;
 }
 
-/* App Wrapper Container */
 .app-container {
   width: 100%;
   max-width: 900px;
@@ -79,7 +78,6 @@ body {
   z-index: 0;
 }
 
-/* Header Styling */
 .app-header {
   text-align: center;
   z-index: 1;
@@ -118,7 +116,6 @@ body {
   line-height: 1.5;
 }
 
-/* Cards Layout */
 .app-content {
   display: flex;
   flex-direction: column;
@@ -141,7 +138,6 @@ body {
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-/* Password Display Card */
 .display-card {
   display: flex;
   justify-content: space-between;
@@ -225,7 +221,6 @@ body {
   box-shadow: 0 0 12px rgba(0, 245, 212, 0.3);
 }
 
-/* Strength Summary Card */
 .strength-summary-card {
   background: rgba(22, 16, 38, 0.4);
   border: 1px solid var(--glass-border);
@@ -264,7 +259,6 @@ body {
   transition: width 0.4s cubic-bezier(0.1, 0.8, 0.2, 1), background 0.3s ease;
 }
 
-/* Settings Grid */
 .settings-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -330,7 +324,6 @@ body {
   transition: var(--transition-smooth);
 }
 
-/* Slider Thumb Styling */
 .length-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -367,7 +360,6 @@ body {
   border-color: var(--neon-cyan);
 }
 
-/* Custom Switches Grid */
 .switches-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -381,7 +373,6 @@ body {
   }
 }
 
-/* Premium iOS Switch Container */
 .switch-container {
   display: flex;
   align-items: center;
@@ -414,7 +405,6 @@ body {
   position: absolute;
 }
 
-/* Switch Visual Slider */
 .switch-slider {
   position: relative;
   display: inline-block;
@@ -447,20 +437,17 @@ input:checked + .switch-slider:before {
   transform: translateX(18px);
 }
 
-/* Focus or Specific Color Accents on switches */
 .switch-container:nth-child(even) input:checked + .switch-slider {
   background-color: var(--neon-cyan);
   box-shadow: 0 0 10px var(--neon-glow-cyan);
 }
 
-/* Right Panel: Analytics & History */
 .right-panel {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Strength Analytics Card */
 .analytics-card {
   border-left: 3px solid var(--neon-cyan);
 }
@@ -498,7 +485,6 @@ input:checked + .switch-slider:before {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-/* History Card */
 .history-card {
   border-left: 3px solid var(--neon-purple);
   flex-grow: 1;
@@ -595,7 +581,6 @@ input:checked + .switch-slider:before {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Floating Toast Notifications */
 .floating-toast {
   position: fixed;
   bottom: 30px;
@@ -628,7 +613,6 @@ input:checked + .switch-slider:before {
   }
 }
 
-/* Footer Styling */
 .app-footer {
   text-align: center;
   margin-top: auto;
@@ -638,7 +622,6 @@ input:checked + .switch-slider:before {
   letter-spacing: 1px;
 }
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
